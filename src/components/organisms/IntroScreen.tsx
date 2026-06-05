@@ -102,25 +102,57 @@ function SanskritContent() {
   return (
     <>
       <Section title="मोक्षपटः — क्रीडा-परिचयः">
-        <P><strong>मोक्षपटः</strong>, यः <em>कैवल्यपटः</em> अथवा <em>श्रौतक्रीडाविशेषः</em> इति अपि उच्यते, संत-ज्ञानेश्वर-परम्परायाः प्राचीनः भारतीयः आध्यात्मिकः पट-क्रीडा अस्ति।</P>
-        <Highlight><strong>परमं लक्ष्यम्:</strong> <strong>कैवल्यम्</strong> (मोक्षः) प्राप्तुम् — <strong>परा-भक्तिः</strong> सर्वोत्तमा अवस्था।</Highlight>
+        <P>
+          <strong>मोक्षपटः</strong>, यः <em>कैवल्यपटः</em> अथवा <em>श्रौतक्रीडाविशेषः</em> इति अपि उच्यते,
+          संत-ज्ञानेश्वर-परम्परायाः प्राचीनः भारतीयः आध्यात्मिकः पट-क्रीडा अस्ति। अयं क्रीडा
+          केवलं मनोरञ्जनं नास्ति — इयं आध्यात्मिकी साधना अस्ति। प्रत्येकं घरम्, प्रत्येकः सर्पः,
+          प्रत्येकं सोपानं च आत्मनः मोक्षयात्रायाः अवस्थाः निरूपयति।
+        </P>
+        <Highlight>
+          <strong>परमं लक्ष्यम्:</strong> <strong>कैवल्यम्</strong> (परम-मोक्षः) प्राप्तुम्,
+          यत्र <strong>परा-भक्तिः</strong> सर्वोत्तमा अवस्था। स्वर्गलोकाः, नरकाः, विविध-लोकाश्च
+          इस्मिन् मार्गे विचलनानि मात्र सन्ति।
+        </Highlight>
       </Section>
+
       <Section title="नियम-सारः">
         <Sub title="मूल-क्रीडा">
           <UL>
-            <LI>खेलकाः <strong>मनुष्यलोकात्</strong> (गृह-क्रमाङ्कः १) आरभन्ते; पाशेन प्रगच्छन्ति</LI>
+            <LI>खेलकाः <strong>मनुष्यलोकात्</strong> (गृह-क्रमाङ्कः १) पाशक्षेपेण प्रगच्छन्ति</LI>
             <LI><strong>सोपानानि</strong> = आध्यात्मिक-उत्थानम्; <strong>सर्पाः</strong> = आध्यात्मिक-पतनम्</LI>
             <LI>सोपाने पतेत् → उपरि आरोहेत्; सर्प-मुखे पतेत् → पुच्छं यावत् अवरोहेत्</LI>
+            <LI>सामान्य-घराणि = तत्र तिष्ठेत् प्रतीक्षेत च (स्थिरास्तित्व-कालः)</LI>
+          </UL>
+        </Sub>
+        <Sub title="विशेष-गन्तव्यानि">
+          <UL>
+            <LI><strong>महानरकः:</strong> अत्र पतित्वा क्षुद्रनरकं गत्वा पुनः मनुष्यलोकात् आरभेत</LI>
+            <LI><strong>मृत्युः (मृत्यू उर्फ कबर):</strong> त्रि-वारं तत्र तिष्ठेत्, ततः महानरकं यायात्</LI>
+            <LI><strong>ब्रह्मलोकः, शिवलोकः, वैकुण्ठः:</strong> "सुरक्षित-क्षेत्राणि" — सर्पाः शक्तिहीनाः</LI>
+            <LI><strong>गृह-क्रमाङ्काः २८३–२८५:</strong> मोक्षसमीपे। गृह-क्रमाङ्कः २८५ = परम-विजयः</LI>
+          </UL>
+        </Sub>
+        <Sub title="मुख्य-अपवादाः">
+          <UL>
+            <LI>उच्च-दिव्य-लोकेषु (मोक्षावस्थासु) स्थिताः खेलकाः सर्पैः न पतन्ति</LI>
+            <LI>म्लेच्छमत-घरम् (क्रमाङ्कः ३८) → बेहस्तलोकः, किन्तु तत्र सर्पः मृत्युं नयति</LI>
+            <LI>उच्च-लोकेभ्यः अवताराः नरके न पतन्ति — ते सेवाय अवतरन्ति, पीडाय न</LI>
           </UL>
         </Sub>
         <Sub title="आध्यात्मिक-आचरण-नियमाः">
           <UL>
-            <LI>कोऽङ्कः आवश्यकः इति <strong>न गणयेत्</strong> — निष्काम-कर्म</LI>
+            <LI>कोऽङ्कः आवश्यकः इति <strong>न गणयेत्</strong> — निष्काम-कर्मणा क्रीडेत्</LI>
             <LI><strong>न वञ्चयेत्</strong> — मोक्षः कपटेन न लभ्यते</LI>
-            <LI><strong>अहङ्कारं त्यजेत्</strong> — "इदं मम" इति वदनं आध्यात्मिक-पतनम् आनयति</LI>
+            <LI><strong>अहङ्कारं त्यजेत्</strong> — "एतत् मम मोहरा" इति वदनं अथवा मुक्त-खेलकस्य अवमाननं आध्यात्मिक-पतनम् आनयति</LI>
+            <LI>प्रत्येकं क्रीडारम्भे स्व-कुलदेवतां गुरुं वा स्मरेत्</LI>
+            <LI>"अहमेव तत् मोहरा अस्मि" — आत्म-यात्रया एकतां भावयेत्</LI>
           </UL>
         </Sub>
-        <Highlight><strong>दर्शनम्:</strong> दिव्यजागृतेः क्षुद्रैः पुनः पुनः क्षणैः, एकतया, कृपया च व्यक्तिगत-प्रयत्नेन च आध्यात्मिकी प्रगतिः भवति।</Highlight>
+        <Highlight>
+          <strong>दर्शनम्:</strong> दिव्यजागृतेः क्षुद्रैः पुनः पुनः क्षणैः, एकतया मैत्र्या च,
+          कृपया च व्यक्तिगत-प्रयत्नेन च — एवं त्रिविधेन — आध्यात्मिकी प्रगतिः भवति।
+          मोक्षप्राप्तिः दैवी-संरेखनं व्यक्तिगत-परिपक्वतां च अपेक्षते।
+        </Highlight>
       </Section>
     </>
   );
@@ -129,34 +161,65 @@ function SanskritContent() {
 function EnglishContent() {
   return (
     <>
-      <Section title="Mokshapat — Game Introduction">
-        <P><strong>Mokshapat</strong>, also called <em>Kaivalyapat</em> (The Chart of Liberation) or <em>Shrouta Krida Vishesh</em>, is an ancient Indian spiritual board game created in the tradition of Saint Dnyaneshwar. It is the philosophical ancestor of modern Snakes &amp; Ladders.</P>
-        <Highlight><strong>Ultimate Goal:</strong> Reach <strong>Kaivalya</strong> (Absolute Liberation), with <strong>Parabhakti</strong> (Supreme Devotion) as the highest state.</Highlight>
+      <Section title="Game Introduction">
+        <P>
+          <strong>Mokshapat</strong>, also called <em>Kaivalyapat</em> (The Chart of Liberation)
+          or <em>Shrouta Krida Vishesh</em> (A Special Vedic Game), is an ancient Indian spiritual
+          board game created in the tradition of Saint Dnyaneshwar. It is the philosophical ancestor
+          of modern Snakes &amp; Ladders, but with profound spiritual meaning — each square, snake,
+          and ladder represents a stage of the soul's journey toward liberation (Moksha).
+        </P>
+        <P>
+          The game transforms entertainment into spiritual practice. The ultimate goal is to reach{' '}
+          <strong>Kaivalya</strong> (Absolute Liberation), with <strong>Parabhakti</strong> (Supreme
+          Devotion) as the highest state. All other realms — heavens, hells, and various lokas — are
+          merely detours on this path.
+        </P>
       </Section>
+
       <Section title="Core Rules">
         <Sub title="Basic Gameplay">
           <UL>
-            <LI>Players start from <strong>Manushyaloka</strong> (cell 1) and move by rolling dice</LI>
+            <LI>Players start from <strong>Manushyaloka</strong> (human realm, cell 1) and move by rolling dice</LI>
             <LI><strong>Ladders</strong> = spiritual ascent; <strong>Snakes</strong> = spiritual fall</LI>
             <LI>Land on a ladder → climb to its top; land on a snake's head → descend to its tail</LI>
-            <LI>Neutral squares = stay and wait</LI>
+            <LI>Neutral squares = stay and wait (periods of steady existence)</LI>
           </UL>
         </Sub>
+
         <Sub title="Special Destinations">
           <UL>
-            <LI><strong>Mahanarak (Great Hell):</strong> Roll to move to Kshudranarak, then restart from cell 1</LI>
-            <LI><strong>Mrityu (Death/Grave):</strong> Stay 3 turns, then descend to Mahanarak</LI>
+            <LI><strong>Mahanarak (Great Hell):</strong> Roll to move to Kshudranarak, then restart from the human realm</LI>
+            <LI><strong>Mrityu (Death / Grave):</strong> Must stay 3 turns, then automatically descend to Mahanarak</LI>
+            <LI><strong>Brahmaloka, Shivaloka, Vaikuntha:</strong> "Safe zones" where snakes lose their power</LI>
             <LI><strong>Cells 283–285:</strong> Near Moksha. Cell 285 = ultimate victory</LI>
           </UL>
         </Sub>
-        <Sub title="Spiritual Conduct">
+
+        <Sub title="Key Exceptions">
           <UL>
-            <LI><strong>No calculating</strong> — play with detachment (Nishkama Karma)</LI>
-            <LI><strong>No cheating</strong> — liberation cannot be attained through deceit</LI>
-            <LI><strong>No ego</strong> — claiming ownership of the piece causes spiritual demotion</LI>
+            <LI>Players in high celestial realms (Moksha states) cannot fall via snakes</LI>
+            <LI>Mlechha Mata (cell 38) leads to Behasta Lok (temporary paradise), but a snake there leads to Mrityu</LI>
+            <LI>Avatars (incarnations from high lokas) are immune to hell — they descend to serve, not to suffer</LI>
           </UL>
         </Sub>
-        <Highlight><strong>Philosophy:</strong> The game teaches that spiritual progress comes through small, repeated moments of divine awareness, unity and friendship, and both grace AND personal effort.</Highlight>
+
+        <Sub title="Spiritual Conduct">
+          <UL>
+            <LI><strong>No calculating</strong> what number you need — play with detachment (Nishkama Karma)</LI>
+            <LI><strong>No cheating</strong> — liberation cannot be attained through deceit</LI>
+            <LI><strong>No ego</strong> — saying "this is MY piece" or insulting liberated players causes spiritual demotion</LI>
+            <LI>Begin each game by remembering your Kuladevata (family deity) or Guru</LI>
+            <LI>Maintain the feeling <em>"I am that piece"</em> — identification with the soul's journey</LI>
+          </UL>
+        </Sub>
+
+        <Highlight>
+          <strong>The Philosophy:</strong> The game teaches that spiritual progress comes through
+          small, repeated moments of divine awareness (not just intense meditation); unity and
+          friendship (no ill-will among players); and both grace AND personal effort — liberation
+          requires cosmic alignment and individual readiness.
+        </Highlight>
       </Section>
     </>
   );
