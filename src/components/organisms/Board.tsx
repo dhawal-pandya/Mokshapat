@@ -674,6 +674,7 @@ export function Board() {
         <div
           id="board"
           ref={boardRef}
+          data-lang={language}
           className="board-bg border-[4px] border-brown-500 rounded-[8px] p-[4px] shadow-[inset_0_0_30px_rgba(139,69,19,0.2),0_4px_20px_rgba(0,0,0,0.3)]"
           style={boardStyle}
         >
