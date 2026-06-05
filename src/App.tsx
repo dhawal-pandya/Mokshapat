@@ -11,12 +11,10 @@ function LifeCounter() {
   const language   = useGameStore(s => s.language);
   const lifeCount  = useGameStore(s => s.lifeCount);
   const narakCount = useGameStore(s => s.narakCount);
-  const deathCount = useGameStore(s => s.deathCount);
 
   const stats = [
     { label: t(language, 'livesLabel'), value: lifeCount,  title: 'Times born as human (cell 1)' },
-    { label: t(language, 'narakLabel'), value: narakCount, title: 'Narak (Hell) visits' },
-    { label: t(language, 'deathLabel'), value: deathCount, title: 'Death visits' },
+    { label: t(language, 'narakLabel'), value: narakCount, title: 'Narak + Mrutyu visits' },
   ];
 
   return (

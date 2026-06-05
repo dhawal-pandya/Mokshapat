@@ -44,7 +44,6 @@ export const useGameStore = create<GameStore>()((set, get) => ({
   lastDiceValue:    0,
   lifeCount:        0,
   narakCount:       0,
-  deathCount:       0,
 
   // ---- actions ----
   setLanguage:         (lang)  => set({ language: lang }),
@@ -58,7 +57,7 @@ export const useGameStore = create<GameStore>()((set, get) => ({
   resetGame: () => set({
     playerPos: 0, gameOver: false, isAnimating: false,
     moveLog: [], mrutyuRollCount: 0, lastDiceValue: 0, autoPlay: false,
-    lifeCount: 0, narakCount: 0, deathCount: 0,
+    lifeCount: 0, narakCount: 0,
   }),
 
   rollDice: async () => {
@@ -146,8 +145,7 @@ type Set = (partial: Partial<GameState>) => void;
 const MAHANARAK_SET = new Set(['महानरक', 'महानरक-लेफ्ट', 'महानरक-राइट']);
 
 function hellCountPatch(get: Get, dest: string): Partial<GameState> {
-  if (MAHANARAK_SET.has(dest))  return { narakCount: get().narakCount + 1 };
-  if (dest === 'मरण' || dest === 'मृत्यू उर्फ कबर') return { deathCount: get().deathCount + 1 };
+  if (MAHANARAK_SET.has(dest) || dest === 'मृत्यू उर्फ कबर') return { narakCount: get().narakCount + 1 };
   return {};
 }
 
@@ -181,7 +179,14 @@ async function checkLanding(get: Get, set: Set) {
     if (!stayOffboard.includes(dest)) {
       set({ playerPos: 0 });
     } else {
-      await checkChainedSnake(get, set);
+      const hellDest = snakeToHell[dest];
+      if (hellDest) {
+        await delay(700);
+        playSnakeSound();
+        addLog(get, set, `🐍 ${dest}→${hellDest}`);
+        set({ playerPos: hellDest as PlayerPosition, ...hellCountPatch(get, hellDest) });
+        await delay(1640);
+      }
     }
     return;
   }

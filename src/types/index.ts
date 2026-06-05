@@ -95,5 +95,4 @@ export interface GameState {
   lastDiceValue: number;
   lifeCount: number;
   narakCount: number;
-  deathCount: number;
 }
