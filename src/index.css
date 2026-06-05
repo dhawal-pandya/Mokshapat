@@ -219,7 +219,7 @@
   height: 100%;
   background: linear-gradient(90deg, #8b4513, #c49464);
   border-radius: 2px;
-  animation: countdown-shrink 3s linear forwards;
+  animation: countdown-shrink 1s linear forwards;
   transform-origin: left center;
 }
 @keyframes countdown-shrink {
@@ -241,16 +241,6 @@
 /* Hide on mobile — bottom strip shows instead */
 @media (max-width: 480px) {
   #floating-dice-panel { display: none !important; }
-}
-
-/* ===== 3D DICE TUMBLE ===== */
-@keyframes dice-tumble {
-  0%   { transform: rotateX(0deg)   rotateY(0deg)   rotateZ(0deg); }
-  20%  { transform: rotateX(144deg) rotateY(80deg)  rotateZ(18deg); }
-  40%  { transform: rotateX(252deg) rotateY(180deg) rotateZ(36deg); }
-  60%  { transform: rotateX(380deg) rotateY(260deg) rotateZ(54deg); }
-  80%  { transform: rotateX(468deg) rotateY(340deg) rotateZ(72deg); }
-  100% { transform: rotateX(540deg) rotateY(420deg) rotateZ(90deg); }
 }
 
 

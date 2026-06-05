@@ -93,4 +93,7 @@ export interface GameState {
   highlightedCells: number[];
   searchQuery: string;
   lastDiceValue: number;
+  lifeCount: number;
+  narakCount: number;
+  deathCount: number;
 }

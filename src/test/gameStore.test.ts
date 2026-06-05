@@ -7,6 +7,7 @@ function resetStore() {
     moveLog: [], mrutyuRollCount: 0, lastDiceValue: 0,
     language: 'english', slVisible: true, showIntro: true,
     autoPlay: false, highlightedCells: [], searchQuery: '',
+    lifeCount: 0, narakCount: 0, deathCount: 0,
   });
 }
 

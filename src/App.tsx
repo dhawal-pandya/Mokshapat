@@ -5,6 +5,39 @@ import { GamePanel }      from './components/organisms/GamePanel';
 import { Legend }         from './components/organisms/Legend';
 import { InfoPanels }     from './components/organisms/InfoPanels';
 import { MoveLogDrawer }  from './components/molecules/MoveLogDrawer';
+import { t }              from './utils/langUtils';
+
+function LifeCounter() {
+  const language   = useGameStore(s => s.language);
+  const lifeCount  = useGameStore(s => s.lifeCount);
+  const narakCount = useGameStore(s => s.narakCount);
+  const deathCount = useGameStore(s => s.deathCount);
+
+  const stats = [
+    { label: t(language, 'livesLabel'), value: lifeCount,  title: 'Times born as human (cell 1)' },
+    { label: t(language, 'narakLabel'), value: narakCount, title: 'Narak (Hell) visits' },
+    { label: t(language, 'deathLabel'), value: deathCount, title: 'Death visits' },
+  ];
+
+  return (
+    <div className={[
+      'w-full max-w-[900px] px-4 py-2',
+      'bg-gradient-to-br from-parchment-200 to-parchment-300',
+      'border-2 border-brown-500 rounded-xl',
+      'shadow-[0_2px_8px_rgba(0,0,0,0.12)]',
+      'flex items-center justify-around',
+    ].join(' ')}>
+      {stats.map(({ label, value, title }) => (
+        <div key={label} className="flex flex-col items-center" title={title}>
+          <span className="text-[11px] text-brown-500">{label}</span>
+          <span className="text-[16px] font-bold text-saddle leading-tight">
+            {value || '—'}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function Footer() {
   return (
@@ -47,6 +80,9 @@ export function App() {
 
           {/* Legend */}
           <Legend />
+
+          {/* Life counter */}
+          <LifeCounter />
 
           {/* Move history — collapsible drawer */}
           <MoveLogDrawer />

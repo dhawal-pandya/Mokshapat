@@ -42,6 +42,9 @@ export const useGameStore = create<GameStore>()((set, get) => ({
   highlightedCells: [],
   searchQuery:      '',
   lastDiceValue:    0,
+  lifeCount:        0,
+  narakCount:       0,
+  deathCount:       0,
 
   // ---- actions ----
   setLanguage:         (lang)  => set({ language: lang }),
@@ -55,6 +58,7 @@ export const useGameStore = create<GameStore>()((set, get) => ({
   resetGame: () => set({
     playerPos: 0, gameOver: false, isAnimating: false,
     moveLog: [], mrutyuRollCount: 0, lastDiceValue: 0, autoPlay: false,
+    lifeCount: 0, narakCount: 0, deathCount: 0,
   }),
 
   rollDice: async () => {
@@ -94,7 +98,7 @@ export const useGameStore = create<GameStore>()((set, get) => ({
       if (count < 4) {
         set({ mrutyuRollCount: count, isAnimating: false });
       } else {
-        set({ mrutyuRollCount: 0, playerPos: 'महानरक-राइट' });
+        set({ mrutyuRollCount: 0, playerPos: 'महानरक-राइट', narakCount: get().narakCount + 1 });
         addLog(get, set, '→ महानरक');
         set({ isAnimating: false });
       }
@@ -106,7 +110,7 @@ export const useGameStore = create<GameStore>()((set, get) => ({
 
     // ---- Enter board from janmasthan ----
     if (playerPos === 0) {
-      set({ playerPos: 1 });
+      set({ playerPos: 1, lifeCount: get().lifeCount + 1 });
       addLog(get, set, '→ Entered at 1');
       await checkLanding(get, set);
       set({ isAnimating: false }); return;
@@ -138,6 +142,14 @@ export const useGameStore = create<GameStore>()((set, get) => ({
 // ---- helpers ----
 type Get = () => GameStore;
 type Set = (partial: Partial<GameState>) => void;
+
+const MAHANARAK_SET = new Set(['महानरक', 'महानरक-लेफ्ट', 'महानरक-राइट']);
+
+function hellCountPatch(get: Get, dest: string): Partial<GameState> {
+  if (MAHANARAK_SET.has(dest))  return { narakCount: get().narakCount + 1 };
+  if (dest === 'मरण' || dest === 'मृत्यू उर्फ कबर') return { deathCount: get().deathCount + 1 };
+  return {};
+}
 
 function addLog(get: Get, set: Set, msg: string) {
   const log = [msg, ...get().moveLog];
@@ -188,7 +200,7 @@ async function checkLanding(get: Get, set: Set) {
     await delay(700);
     playSnakeSound();
     addLog(get, set, `🐍 ${pos}→${hellDest}`);
-    set({ playerPos: hellDest as PlayerPosition });
+    set({ playerPos: hellDest as PlayerPosition, ...hellCountPatch(get, hellDest) });
     await delay(1640);
   }
 }
@@ -213,7 +225,7 @@ async function checkChainedSnake(get: Get, set: Set) {
     await delay(2800);
     playSnakeSound();
     addLog(get, set, `🐍 ${pos}→${hellDest}`);
-    set({ playerPos: hellDest as PlayerPosition });
+    set({ playerPos: hellDest as PlayerPosition, ...hellCountPatch(get, hellDest) });
     await delay(1640);
   }
 }

@@ -12,7 +12,6 @@ import {
 import { computeSvgPaths } from '../../utils/svgUtils';
 import { ladders, ladderEndFrom } from '../../data/ladders';
 import { snakes, snakeTailFrom } from '../../data/snakes';
-import { Dice3D } from '../atoms/Dice3D';
 import { t, getCellNames as _getCellNames } from '../../utils/langUtils';
 import { getCellLabel } from '../../store/gameStore';
 import type { SvgData, CellType as TCellType } from '../../types';
@@ -381,7 +380,7 @@ function FloatingDicePanel({
   // Autoplay timer: fires 3 s after each move completes
   useEffect(() => {
     if (!autoPlay || isAnimating || gameOver) return;
-    const id = setTimeout(() => void rollDice(), 3000);
+    const id = setTimeout(() => void rollDice(), 1000);
     return () => clearTimeout(id);
   }, [autoPlay, isAnimating, gameOver, playerPos, rollDice]);
 
@@ -394,9 +393,6 @@ function FloatingDicePanel({
       style={panelStyle}
       className={autoPlay ? 'autoplay-active' : ''}
     >
-      {/* Dice */}
-      <Dice3D value={lastDiceValue} rolling={isAnimating} />
-
       {/* Roll button */}
       <button
         onClick={() => void rollDice()}

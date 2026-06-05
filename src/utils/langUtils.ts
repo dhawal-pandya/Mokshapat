@@ -39,6 +39,7 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     startGame: '🎲 Start Game',
     moksha: '🎊 Moksha! Liberation achieved! 🎊',
     autoOn: '⏸ Auto', autoOff: '▶ Auto',
+    livesLabel: 'Lives', narakLabel: 'Narak', deathLabel: 'Death',
   },
   sanskrit: {
     ladder: 'सोपानम्', snake: 'सर्पः', from: 'तः',
@@ -59,6 +60,7 @@ const TRANSLATIONS: Record<Language, Record<string, string>> = {
     startGame: '🎲 क्रीडाम् आरभ',
     moksha: '🎊 मोक्षः! मुक्तिः प्राप्ता! 🎊',
     autoOn: '⏸ स्वयम्', autoOff: '▶ स्वयम्',
+    livesLabel: 'जन्मानि', narakLabel: 'नरकः', deathLabel: 'मृत्युः',
   },
 };
 
