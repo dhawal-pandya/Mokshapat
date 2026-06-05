@@ -26,7 +26,7 @@ export function GamePanel() {
           'bg-gradient-to-br from-parchment-100 to-parchment-200',
           'border-2 border-brown-400 rounded-lg text-brown-800',
           'placeholder-brown-500/60',
-          'focus:border-brown-600 focus:shadow-[0_0_5px_rgba(139,90,43,0.3)]',
+          'focus:border-brown-600 focus:shadow-[0_0_5px_rgba(21,101,192,0.3)]',
           'transition-all duration-200',
         ].join(' ')}
       />

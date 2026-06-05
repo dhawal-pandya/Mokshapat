@@ -1,9 +1,9 @@
 import type { Language } from '../../types';
 import { useGameStore } from '../../store/gameStore';
 
-const OPTIONS: { value: Language; label: string }[] = [
-  { value: 'english',  label: 'English' },
-  { value: 'sanskrit', label: 'संस्कृत' },
+const OPTIONS: { value: Language; label: string; short: string }[] = [
+  { value: 'english',  label: 'English',   short: 'E'  },
+  { value: 'sanskrit', label: 'संस्कृत', short: 'स'  },
 ];
 
 export function LanguageDropdown() {
@@ -36,7 +36,8 @@ export function LanguageDropdown() {
                 : 'text-brown-700 hover:bg-parchment-300',
             ].join(' ')}
           >
-            {opt.label}
+            <span className="max-[480px]:hidden">{opt.label}</span>
+            <span className="hidden max-[480px]:inline">{opt.short}</span>
           </button>
         );
       })}

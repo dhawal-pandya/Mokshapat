@@ -13,10 +13,10 @@ export function IntroScreen() {
 
   return (
     <div className="fixed inset-0 z-[10000] flex flex-col" style={{
-      background: 'radial-gradient(ellipse at center, transparent 40%, rgba(80,50,20,0.3) 100%), linear-gradient(180deg,#f4e4c1 0%,#e8d5a3 30%,#dcc896 70%,#d4bc84 100%)',
+      background: 'radial-gradient(ellipse at center, transparent 40%, rgba(21,101,192,0.2) 100%), linear-gradient(180deg,#f0f9ff 0%,#e0f2fe 30%,#bae6fb 70%,#7dd3fc 100%)',
     }}>
       {/* Header */}
-      <div className="bg-gradient-to-br from-saddle to-[#6b3410] text-parchment-100 px-5 py-3.5 flex justify-between items-center shadow-[0_3px_10px_rgba(0,0,0,0.3)]">
+      <div className="bg-gradient-to-br from-saddle to-[#047857] text-parchment-100 px-5 py-3.5 flex justify-between items-center shadow-[0_3px_10px_rgba(0,0,0,0.3)]">
         <h1 className="text-[22px] font-bold text-parchment-100 m-0" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.4)' }}>
           {title}
         </h1>
@@ -29,7 +29,7 @@ export function IntroScreen() {
       </div>
 
       {/* Footer CTA */}
-      <div className="bg-gradient-to-br from-[#6b3410] to-saddle px-5 py-4 text-center flex flex-col items-center gap-2">
+      <div className="bg-gradient-to-br from-[#047857] to-saddle px-5 py-4 text-center flex flex-col items-center gap-2">
         <button
           onClick={startGame}
           className={[
@@ -40,7 +40,7 @@ export function IntroScreen() {
             'hover:scale-[1.05] hover:shadow-[0_6px_20px_rgba(0,0,0,0.4)]',
             'transition-all duration-300 cursor-pointer',
           ].join(' ')}
-          style={{ border: '3px solid #d4bc84' }}
+          style={{ border: '3px solid #38bdf8' }}
         >
           {startLabel}
         </button>
@@ -72,7 +72,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function Sub({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <>
-      <h3 className="text-[#6b3410] mt-3 mb-2 text-[16px] font-semibold">{title}</h3>
+      <h3 className="text-[#047857] mt-3 mb-2 text-[16px] font-semibold">{title}</h3>
       {children}
     </>
   );

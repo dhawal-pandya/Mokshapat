@@ -103,6 +103,7 @@ function snakePath(head: SvgPoint, tail: SvgPoint, waypoint?: SvgPoint): string 
 export function computeSvgPaths(
   boardEl: HTMLElement,
   containerEl: HTMLElement,
+  scrollWrapEl?: HTMLElement | null,
 ): SvgData {
   const rawBoardRect = boardEl.getBoundingClientRect();
   const cs = window.getComputedStyle(boardEl);
@@ -129,7 +130,11 @@ export function computeSvgPaths(
   const svgWidth  = boardEl.offsetWidth  - borderLeft - borderRight;
   const svgHeight = boardEl.offsetHeight - borderTop  - borderBottom;
 
-  const transform = window.getComputedStyle(containerEl).transform;
+  // The CSS scale() transform is applied to scrollWrapEl, not containerEl.
+  // Read it from scrollWrapEl so getBoundingClientRect values (viewport-relative)
+  // are correctly divided back to CSS-pixel SVG coordinates.
+  const scaleEl = scrollWrapEl ?? containerEl;
+  const transform = window.getComputedStyle(scaleEl).transform;
   let scale = 1;
   if (transform && transform !== 'none') {
     const m = new DOMMatrix(transform);

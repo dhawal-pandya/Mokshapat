@@ -530,8 +530,7 @@ function BottomCell({ id, gridCol, name, typeClass, label, tooltipContent }: Bot
   );
 }
 
-// Natural full width of the board section: board(1102) + offboard clearance(2×120)
-const BOARD_SECTION_W = 1102 + 240;
+const BOARD_SECTION_W = BOARD_WIDTH + 240; // board + 120px clearance each side for offboard cells
 
 // ---- Main Board ----
 export function Board() {
@@ -545,7 +544,7 @@ export function Board() {
 
   const computeSvg = useCallback(() => {
     if (!boardRef.current || !containerRef.current) return;
-    const data = computeSvgPaths(boardRef.current, containerRef.current);
+    const data = computeSvgPaths(boardRef.current, containerRef.current, scrollWrapRef.current);
     setSvgData(data);
   }, []);
 
@@ -700,19 +699,19 @@ export function Board() {
             }}
           >
             <div style={{
-              background: 'linear-gradient(145deg, rgba(244,228,193,0.92), rgba(212,188,132,0.92))',
-              border: '2px double #8b5a2b',
+              background: 'linear-gradient(145deg, rgba(224,242,254,0.92), rgba(186,230,251,0.92))',
+              border: '2px double #1565c0',
               borderRadius: 8,
               padding: '10px 16px',
-              boxShadow: '0 2px 12px rgba(139,90,43,0.35)',
+              boxShadow: '0 2px 12px rgba(21,101,192,0.3)',
             }}>
-              <div style={{ fontSize: 15, fontWeight: 'bold', color: '#5d3a1a', lineHeight: 1.3 }}>
+              <div style={{ fontSize: 15, fontWeight: 'bold', color: '#082560', lineHeight: 1.3 }}>
                 हरिहर क्षेत्र
               </div>
-              <div style={{ fontSize: 11, color: '#8b5a2b', marginTop: 2, letterSpacing: '0.04em' }}>
+              <div style={{ fontSize: 11, color: '#1565c0', marginTop: 2, letterSpacing: '0.04em' }}>
                 Harihar Kshetra
               </div>
-              <div style={{ fontSize: 9, color: '#a07040', marginTop: 3, lineHeight: 1.4 }}>
+              <div style={{ fontSize: 9, color: '#0369a1', marginTop: 3, lineHeight: 1.4 }}>
                 ॐ नमः शिवाय · ॐ नमो विष्णवे
               </div>
             </div>
