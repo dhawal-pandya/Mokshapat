@@ -13,34 +13,36 @@ export function IntroScreen() {
 
   return (
     <div className="fixed inset-0 z-[10000] flex flex-col" style={{
-      background: 'radial-gradient(ellipse at center, transparent 40%, rgba(21,101,192,0.2) 100%), linear-gradient(180deg,#f0f9ff 0%,#e0f2fe 30%,#bae6fb 70%,#7dd3fc 100%)',
+      background: 'radial-gradient(ellipse at 50% 0%, rgba(201,161,74,0.16) 0%, transparent 45%), radial-gradient(ellipse at center, transparent 38%, rgba(0,0,0,0.5) 100%), linear-gradient(180deg,#211826 0%,#1d1420 35%,#190f18 65%,#220a0e 100%)',
     }}>
       {/* Header */}
-      <div className="bg-gradient-to-br from-saddle to-[#047857] text-parchment-100 px-5 py-3.5 flex justify-between items-center shadow-[0_3px_10px_rgba(0,0,0,0.3)]">
-        <h1 className="text-[22px] font-bold text-parchment-100 m-0" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.4)' }}>
-          {title}
+      <div className="bg-gradient-to-br from-[#2a1c10] to-[#1c1209] px-5 py-3.5 flex justify-between items-center shadow-[0_3px_12px_rgba(0,0,0,0.5)] border-b-2 border-[#b8902f]">
+        <h1 className="font-display text-[24px] font-bold m-0 tracking-[0.12em]" style={{ color: '#e7c168', textShadow: '0 0 16px rgba(201,161,74,0.4), 0 2px 4px rgba(0,0,0,0.6)' }}>
+          ॐ {title} ॐ
         </h1>
         <LanguageDropdown />
       </div>
 
-      {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto px-5 py-4 max-w-[900px] w-full mx-auto">
-        {language === 'english'  ? <EnglishContent /> : <SanskritContent />}
+      {/* Scrollable content — parchment scroll on dark ground */}
+      <div className="flex-1 overflow-y-auto px-4 py-5">
+        <div className="max-w-[900px] w-full mx-auto bg-gradient-to-b from-parchment-50 to-parchment-100 text-brown-800 rounded-xl border-2 border-[#b8902f]/60 shadow-[0_6px_30px_rgba(0,0,0,0.6)] px-6 py-5">
+          {language === 'english'  ? <EnglishContent /> : <SanskritContent />}
+        </div>
       </div>
 
       {/* Footer CTA */}
-      <div className="bg-gradient-to-br from-[#047857] to-saddle px-5 py-4 text-center flex flex-col items-center gap-2">
+      <div className="bg-gradient-to-br from-[#2a1c10] to-[#150c06] px-5 py-4 text-center flex flex-col items-center gap-2 border-t-2 border-[#b8902f]">
         <button
           onClick={startGame}
           className={[
             'px-12 py-3.5 text-[20px] font-bold',
-            'bg-gradient-to-br from-parchment-100 to-parchment-200 text-saddle',
-            'border-3 border-parchment-400 rounded-[30px]',
-            'shadow-[0_4px_15px_rgba(0,0,0,0.3)]',
-            'hover:scale-[1.05] hover:shadow-[0_6px_20px_rgba(0,0,0,0.4)]',
+            'bg-gradient-to-br from-parchment-100 to-parchment-300 text-brown-800',
+            'rounded-[30px]',
+            'shadow-[0_4px_15px_rgba(0,0,0,0.5)]',
+            'hover:scale-[1.05] hover:shadow-[0_0_24px_rgba(201,161,74,0.55)]',
             'transition-all duration-300 cursor-pointer',
           ].join(' ')}
-          style={{ border: '3px solid #38bdf8' }}
+          style={{ border: '3px solid #c9a14a' }}
         >
           {startLabel}
         </button>
@@ -50,7 +52,7 @@ export function IntroScreen() {
             href="https://dhawal-pandya.github.io"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-parchment-100 transition-colors"
+            className="underline text-[#e0b85a] hover:text-[#f4d488] transition-colors"
           >
             Dhawal Pandya
           </a>
@@ -63,7 +65,7 @@ export function IntroScreen() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <>
-      <h2 className="text-saddle border-b-2 border-saddle pb-2 mt-5 mb-3 text-[20px] font-bold">{title}</h2>
+      <h2 className="font-display text-saddle border-b-2 border-saddle pb-2 mt-5 mb-3 text-[20px] font-bold tracking-wide">{title}</h2>
       {children}
     </>
   );
@@ -72,7 +74,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 function Sub({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <>
-      <h3 className="text-[#047857] mt-3 mb-2 text-[16px] font-semibold">{title}</h3>
+      <h3 className="text-[#8a4b14] mt-3 mb-2 text-[16px] font-semibold">{title}</h3>
       {children}
     </>
   );

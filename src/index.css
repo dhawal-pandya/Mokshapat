@@ -2,35 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ===== PAGE BACKGROUND ===== */
+/* Match the dark page so no white shows above/below the content or on overscroll. */
+html, body { background-color: #160608; }
+
+/* Inscriptional display face for titles & headings; Devanagari falls to Tiro. */
+.font-display {
+  font-family: 'Cinzel', 'Tiro Devanagari Sanskrit', Georgia, serif;
+}
+/* Sanskrit board text in an elegant Devanagari serif. */
+[data-lang="sanskrit"] .cell .cell-name {
+  font-family: 'Tiro Devanagari Sanskrit', Georgia, serif;
+}
+
+/* ===== PAGE BACKGROUND — heavy, dark, imposing ===== */
 .parchment-bg {
   background:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E"),
-    radial-gradient(ellipse at 15% 25%, rgba(3,105,161,0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 75%, rgba(5,150,105,0.10) 0%, transparent 45%),
-    radial-gradient(ellipse at 50% 10%, rgba(14,165,233,0.08) 0%, transparent 40%),
-    radial-gradient(ellipse at 70% 40%, rgba(3,105,161,0.06) 0%, transparent 35%),
-    radial-gradient(ellipse at 25% 80%, rgba(5,150,105,0.08) 0%, transparent 45%),
-    radial-gradient(ellipse at center, transparent 40%, rgba(1,69,121,0.18) 100%),
-    linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 15%, #bae6fb 30%, #e8f5ff 50%, #cce8fa 70%, #dff0fc 85%, #bae6fb 100%);
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 50% 0%, rgba(201,161,74,0.14) 0%, transparent 42%),
+    radial-gradient(ellipse at 50% 100%, rgba(150,22,16,0.22) 0%, transparent 52%),
+    radial-gradient(ellipse at center, transparent 38%, rgba(0,0,0,0.45) 100%),
+    linear-gradient(180deg, #211826 0%, #1d1420 32%, #190f18 60%, #220a0e 84%, #120407 100%);
   background-attachment: fixed;
 }
 
-/* Decorative double-border frame */
+/* Decorative double-border frame — aged gold */
 .parchment-frame::before {
   content: '';
   position: fixed;
   inset: 8px;
-  border: 3px double #1565c0;
+  border: 3px double #b8902f;
   border-radius: 4px;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.35;
+  opacity: 0.5;
+  box-shadow: inset 0 0 60px rgba(0,0,0,0.5);
 }
 
-/* ===== BOARD ===== */
+/* ===== BOARD — vertical journey: hell → world → Harihar Kshetra → Moksha ===== */
 .board-bg {
-  background: #ffffff;
+  background:
+    /* Black top corners frame the final Moksha cells */
+    radial-gradient(ellipse 34% 14% at 0% 0%,
+      rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.45) 55%, transparent 100%),
+    radial-gradient(ellipse 34% 14% at 100% 0%,
+      rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.45) 55%, transparent 100%),
+    /* Harihar Kshetra magical glow around the oval ring */
+    radial-gradient(ellipse 54% 11% at 50% 28.5%,
+      rgba(214,176,255,0.55) 0%, rgba(255,212,138,0.30) 48%, transparent 78%),
+    linear-gradient(180deg,
+      #efe9ff 0%,     /* Moksha */
+      #e9e6fb 8%,
+      #e4e6fb 16%,
+      #ece0fb 22%,
+      #efe1f5 28%,    /* Harihar Kshetra */
+      #e7e6f3 35%,
+      #e2eed9 45%,
+      #d8ebcd 56%,    /* green world */
+      #dceccd 66%,
+      #e6ecc4 75%,
+      #e3b79a 86%,
+      #b3402a 92%,
+      #7c160f 96%,    /* hell */
+      #3d0706 100%);
 }
 
 /* ===== CELLS ===== */
@@ -89,25 +122,38 @@
   z-index: 500 !important;
 }
 
-.cell-normal        { background: #fff; border-color: #bbb; }
+/* Translucent so the board's zone gradient tints each cell by its position. */
+.cell-normal        { background: rgba(255,255,255,0.46); border-color: rgba(120,120,130,0.45); }
 .cell-start         { background: linear-gradient(145deg, #e3f2fd, #bbdefb); border: 2px solid #1976d2; }
-.cell-ladder-start  { background: #fff; border: 2px solid #4caf50; }
-.cell-ladder-end    { background: linear-gradient(145deg, #e8f5e9, #c8e6c9); border: 2px solid #66bb6a; }
-.cell-snake-head    { background: #fff; border: 2px solid #e53935; }
-.cell-snake-tail    { background: linear-gradient(145deg, #ffebee, #ffcdd2); border: 2px solid #ef9a9a; }
-.cell-dual          { background: #fff; border: 2px solid #ff9800; }
+.cell-ladder-start  { background: rgba(255,255,255,0.5); border: 2px solid #43a047; }
+.cell-ladder-end    { background: linear-gradient(145deg, rgba(232,245,233,0.82), rgba(200,230,201,0.82)); border: 2px solid #66bb6a; }
+.cell-snake-head    { background: rgba(255,255,255,0.5); border: 2px solid #e53935; }
+.cell-snake-tail    { background: linear-gradient(145deg, rgba(255,235,238,0.8), rgba(255,205,210,0.8)); border: 2px solid #ef9a9a; }
+.cell-dual          { background: rgba(255,255,255,0.5); border: 2px solid #ff9800; }
 .cell-moksha        { background: linear-gradient(145deg, #fff9c4, #fff176); border: 2px solid #f9a825; }
 .cell-special-star  { background: linear-gradient(145deg, #fff3e0, #ffe0b2); border: 2px solid #ff9800; }
-.cell-final         { background: linear-gradient(145deg, #f3e5f5, #e1bee7); border: 2px solid #ab47bc; }
-.cell-bottom-hell   { background: linear-gradient(145deg, #ffebee, #ffcdd2); border: 2px solid #d32f2f; }
-.cell-bottom-kshudra{ background: linear-gradient(145deg, #fbe9e7, #ffccbc); border: 2px solid #e64a19; }
-.cell-bottom-death  { background: linear-gradient(145deg, #f3e5f5, #e1bee7); border: 2px solid #8e24aa; }
-.cell-special-maran { background: linear-gradient(145deg, #fce4ec, #f8bbd0); border: 2px solid #e91e63; }
+.cell-final         { background: linear-gradient(145deg, #f6ecff, #e7c8f5); border: 2px solid #ab47bc; }
+
+/* Hell zone — sharp, dark, foreboding reds with light text. */
+.cell-bottom-hell   { background: linear-gradient(145deg, #8a1414, #4a0606); border: 2px solid #ff5a4d; }
+.cell-bottom-kshudra{ background: linear-gradient(145deg, #8a2f14, #4a1606); border: 2px solid #ff7a45; }
+.cell-bottom-death  { background: linear-gradient(145deg, #3a0a4a, #1a0226); border: 2px solid #c060e0; }
+.cell-special-maran { background: linear-gradient(145deg, #6a0f2a, #3a0414); border: 2px solid #ff4d7a; }
 .cell-special-janma { background: linear-gradient(145deg, #e3f2fd, #bbdefb); border: 2px solid #1976d2; }
+
+/* Light text inside the dark hell cells */
+.cell-bottom-hell .cell-name,
+.cell-bottom-kshudra .cell-name,
+.cell-bottom-death .cell-name,
+.cell-special-maran .cell-name { color: #ffe9e9; }
+.cell-bottom-hell .num,
+.cell-bottom-kshudra .num,
+.cell-bottom-death .num,
+.cell-special-maran .num { color: #ffd6d6 !important; }
 
 .cell-glow  { animation: glow 2s ease-in-out infinite alternate; }
 .cell-highlight { box-shadow: 0 0 12px 3px #fff !important; z-index: 50; }
-.cell-player-here { box-shadow: 0 0 12px 3px rgba(5,150,105,0.85) !important; }
+.cell-player-here { box-shadow: 0 0 12px 3px rgba(201,161,74,0.9) !important; }
 
 /* ===== OFFBOARD SIDE CELLS ===== */
 .offboard-side-cell {
@@ -136,12 +182,12 @@
   bottom: calc(100% + 5px);
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(145deg, #e0f2fe, #bae6fb);
-  border: 2px solid #1565c0;
+  background: linear-gradient(145deg, #f7ecd5, #e9d2a4);
+  border: 2px solid #6f4a1f;
   border-radius: 6px;
   padding: 8px 10px;
   font-size: 12px;
-  color: #082560;
+  color: #2e1c0a;
   white-space: nowrap;
   z-index: 200;
   box-shadow: 0 4px 12px rgba(0,0,0,0.25);
@@ -167,18 +213,23 @@
   position: absolute;
   width: 22px;
   height: 22px;
-  background: radial-gradient(circle at 35% 35%, #38bdf8, #0369a1);
-  border: 2px solid #e0f2fe;
+  background: radial-gradient(circle at 35% 35%, #ffffff, #ececec);
+  border: 2px solid #ffffff;
   border-radius: 50%;
   z-index: 200;
-  box-shadow: 0 0 8px rgba(3,105,161,0.9), 0 2px 4px rgba(0,0,0,0.4);
   transition: left 0.56s ease, top 0.56s ease;
   pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  line-height: 1;
+  /* White orb with a glow that cycles one rainbow colour at a time */
+  animation: token-rainbow 7s linear infinite;
+}
+@keyframes token-rainbow {
+  0%   { box-shadow: 0 0 13px 3px rgba(255,0,0,0.95),   0 2px 4px rgba(0,0,0,0.45); }
+  16%  { box-shadow: 0 0 13px 3px rgba(255,127,0,0.95), 0 2px 4px rgba(0,0,0,0.45); }
+  33%  { box-shadow: 0 0 13px 3px rgba(255,225,0,0.95), 0 2px 4px rgba(0,0,0,0.45); }
+  50%  { box-shadow: 0 0 13px 3px rgba(0,210,0,0.95),   0 2px 4px rgba(0,0,0,0.45); }
+  66%  { box-shadow: 0 0 13px 3px rgba(0,150,255,0.95), 0 2px 4px rgba(0,0,0,0.45); }
+  83%  { box-shadow: 0 0 13px 3px rgba(120,40,230,0.95),0 2px 4px rgba(0,0,0,0.45); }
+  100% { box-shadow: 0 0 13px 3px rgba(255,0,0,0.95),   0 2px 4px rgba(0,0,0,0.45); }
 }
 .player-token.sliding {
   transition: left 1.46s ease-in-out, top 1.46s ease-in-out;
@@ -188,17 +239,18 @@
 #floating-dice-panel {
   position: absolute;
   z-index: 180;
-  background: linear-gradient(145deg, #e0f2fe, #bae6fb);
-  border: 3px solid #1565c0;
+  background: linear-gradient(145deg, #f4e7cc, #e0c690);
+  border: 3px solid #6f4a1f;
   border-radius: 12px;
   padding: 10px 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 7px;
-  box-shadow: 0 4px 20px rgba(3,105,161,0.25), inset 0 0 15px rgba(14,165,233,0.08);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(154,100,16,0.12);
   transition: left 0.56s ease, top 0.56s ease;
-  min-width: 130px;
+  width: 150px;          /* fixed so it never jitters as the status text changes */
+  box-sizing: border-box;
   user-select: none;
 }
 
@@ -206,13 +258,13 @@
 .countdown-track {
   width: 100%;
   height: 4px;
-  background: rgba(21,101,192,0.15);
+  background: rgba(111,74,31,0.22);
   border-radius: 2px;
   overflow: hidden;
 }
 .countdown-fill {
   height: 100%;
-  background: linear-gradient(90deg, #059669, #34d399);
+  background: linear-gradient(90deg, #9a6410, #e0b85a);
   border-radius: 2px;
   animation: countdown-shrink 1s linear forwards;
   transform-origin: left center;
@@ -224,13 +276,13 @@
 
 /* Autoplay pulse on the panel border */
 #floating-dice-panel.autoplay-active {
-  border-color: #059669;
-  box-shadow: 0 0 0 0 rgba(5,150,105,0.4), 0 4px 20px rgba(0,0,0,0.3);
+  border-color: #c69a4c;
+  box-shadow: 0 0 0 0 rgba(198,154,76,0.5), 0 4px 20px rgba(0,0,0,0.4);
   animation: panel-pulse 2s ease-in-out infinite;
 }
 @keyframes panel-pulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(5,150,105,0.4), 0 4px 20px rgba(0,0,0,0.3); }
-  50%      { box-shadow: 0 0 0 6px rgba(5,150,105,0),  0 4px 20px rgba(0,0,0,0.3); }
+  0%,100% { box-shadow: 0 0 0 0 rgba(198,154,76,0.5), 0 4px 20px rgba(0,0,0,0.4); }
+  50%      { box-shadow: 0 0 0 6px rgba(198,154,76,0),  0 4px 20px rgba(0,0,0,0.4); }
 }
 
 /* ===== PRINT CAPTURE ===== */
@@ -242,6 +294,32 @@
   display: none;
 }
 
+/* ===== CONFETTI (completion celebration) ===== */
+.confetti-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  overflow: hidden;
+}
+.confetti-piece {
+  position: absolute;
+  width: 8px;
+  height: 14px;
+  border-radius: 1px;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: confetti-fly;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.3, 1);
+  animation-fill-mode: forwards;
+}
+@keyframes confetti-fly {
+  0%   { transform: translate(0, 0) rotate(0); opacity: 0; }
+  12%  { opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); opacity: 0; }
+}
+
 /* ===== ANIMATIONS ===== */
 @keyframes glow {
   0%   { box-shadow: 0 0 5px rgba(245,197,24,0.3); }
@@ -250,9 +328,9 @@
 
 /* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: rgba(21,101,192,0.08); border-radius: 4px; }
-::-webkit-scrollbar-thumb { background: rgba(21,101,192,0.35); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(21,101,192,0.55); }
+::-webkit-scrollbar-track { background: rgba(111,74,31,0.12); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: rgba(111,74,31,0.4); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(111,74,31,0.6); }
 
 /* ===== RESPONSIVE ===== */
 @media (pointer: coarse) {
@@ -273,11 +351,11 @@
     left: 0;
     right: 0;
     z-index: 300;
-    background: linear-gradient(145deg, #e0f2fe, #bae6fb);
-    border-top: 3px solid #1565c0;
+    background: linear-gradient(145deg, #2a1c10, #1c1209);
+    border-top: 3px solid #b8902f;
     padding: 8px 12px;
     padding-bottom: max(8px, env(safe-area-inset-bottom));
-    box-shadow: 0 -4px 20px rgba(21,101,192,0.2);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
   }
 
   .parchment-bg {

@@ -152,6 +152,7 @@ function BoardCell({ num, style, isOval }: BoardCellProps) {
 // ---- SVG overlay ----
 function SnakeLadderSvg({ data, visible }: { data: SvgData; visible: boolean }) {
   if (!visible) return null;
+  const skinById = Object.fromEntries(data.snakeSkins.map(s => [s.id, s]));
   return (
     <svg
       id="sl-svg"
@@ -161,20 +162,18 @@ function SnakeLadderSvg({ data, visible }: { data: SvgData; visible: boolean }) 
       style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 10, overflow: 'visible' }}
     >
       <defs>
-        {data.markerDefs.map(m => (
-          m.type === 'head' ? (
-            <marker key={m.id} id={m.id} viewBox="0 0 16 12" refX="1" refY="6" markerWidth="10" markerHeight="8" orient="auto">
-              <path d="M 0 6 L 10 1 L 8 6 L 10 11 Z" fill={m.color} fillOpacity="0.9" />
-              <circle cx="6" cy="3.5" r="1" fill="#fff" />
-              <circle cx="6" cy="8.5" r="1" fill="#fff" />
-              <path d="M 0 6 L -3 4 M 0 6 L -3 8" stroke="#d32f2f" strokeWidth="0.8" fill="none" />
-            </marker>
-          ) : (
-            <marker key={m.id} id={m.id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="4" orient="auto">
-              <path d="M 0 2 Q 5 5 10 5 Q 5 5 0 8 Z" fill={m.color} fillOpacity="0.8" />
-            </marker>
-          )
+        {/* One lit-from-above gradient per snake skin (light top → dark belly edge). */}
+        {data.snakeSkins.map(sk => (
+          <linearGradient key={sk.id} id={`skin-${sk.id}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stopColor={sk.light} />
+            <stop offset="45%"  stopColor={sk.base} />
+            <stop offset="100%" stopColor={sk.dark} />
+          </linearGradient>
         ))}
+        {/* Soft drop-shadow unifies each creature's overlapping limbs into one silhouette. */}
+        <filter id="snk-shadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="1.6" stdDeviation="1.8" floodColor="#1a0f08" floodOpacity="0.45" />
+        </filter>
       </defs>
 
       {/* Ladders */}
@@ -190,20 +189,31 @@ function SnakeLadderSvg({ data, visible }: { data: SvgData; visible: boolean }) 
         ))}
       </g>
 
-      {/* Snakes */}
+      {/* Snakes — each a filled, tapered, many-headed body */}
       <g>
-        {data.snakes.map(s => (
-          <path
-            key={s.key}
-            d={s.d}
-            stroke={s.color}
-            strokeWidth="3"
-            strokeOpacity="0.8"
-            fill="none"
-            markerStart={`url(#${s.headMarkerId})`}
-            markerEnd={`url(#${s.tailMarkerId})`}
-          />
-        ))}
+        {data.snakeBodies.map(b => {
+          const sk = skinById[b.skinId];
+          return (
+            <g key={b.key} filter="url(#snk-shadow)">
+              {/* Body fill (all limbs + snouts share one fill so overlaps merge) */}
+              <path d={b.bodyD} fill={`url(#skin-${b.skinId})`} fillRule="nonzero" />
+              {/* Belly sheen down the centreline */}
+              <path d={b.bellyD} fill="none" stroke={sk?.belly ?? '#fff'} strokeOpacity="0.45" strokeWidth="1.5" strokeLinecap="round" />
+              {/* Eyes + glints + tongues */}
+              {b.heads.map((h, hi) => (
+                <g key={hi}>
+                  <path d={h.tongueD} stroke="#b3201f" strokeWidth="1.1" fill="none" strokeLinecap="round" />
+                  {h.eyes.map((e, ei) => (
+                    <circle key={`e${ei}`} cx={e.cx} cy={e.cy} r={e.r} fill="#0b0b0b" />
+                  ))}
+                  {h.glints.map((g, gi2) => (
+                    <circle key={`g${gi2}`} cx={g.cx} cy={g.cy} r={g.r} fill="#ffffff" fillOpacity="0.85" />
+                  ))}
+                </g>
+              ))}
+            </g>
+          );
+        })}
       </g>
     </svg>
   );
@@ -237,9 +247,17 @@ function cellOffsetInsideBoard(
 }
 
 // ---- Player token ----
-function PlayerToken({ boardRef, containerRef }: { boardRef: React.RefObject<HTMLDivElement | null>; containerRef: React.RefObject<HTMLDivElement | null> }) {
+function PlayerToken({ boardRef, containerRef, routes }: {
+  boardRef: React.RefObject<HTMLDivElement | null>;
+  containerRef: React.RefObject<HTMLDivElement | null>;
+  routes?: SvgData['snakeRoutes'];
+}) {
   const playerPos = useGameStore(s => s.playerPos);
   const [style, setStyle] = useState<CSSProperties>({ display: 'none' });
+  const tokenRef  = useRef<HTMLDivElement>(null);
+  const prevPos   = useRef<number | string | undefined>(undefined);
+  const lastXY    = useRef<{ x: number; y: number } | null>(null);
+  const animRef   = useRef<number>(0);
 
   useLayoutEffect(() => {
     if (!boardRef.current) return;
@@ -249,24 +267,15 @@ function PlayerToken({ boardRef, containerRef }: { boardRef: React.RefObject<HTM
     if (playerPos === 0) {
       el = document.getElementById('cell-janma');
     } else if (typeof playerPos === 'string') {
-      const map: Record<string, string> = {
-        'महानरक':          'cell-mahanaarak-center',
-        'महानरक-लेफ्ट':    'cell-mahanaarak-left',
-        'महानरक-राइट':     'cell-mahanaarak-right',
-        'क्षुद्रनरक':      'cell-kshudranarak',
-        'मरण':             'cell-maran',
-        'मृत्यू उर्फ कबर': 'cell-mrutyu',
-        'शून्य लोक':       'cell-shunya',
-        'आत्मपरिभाण लोक':  'cell-atma',
-        'बेहस्त लोक':      'cell-behast',
-      };
-      const id = map[playerPos];
-      el = id ? document.getElementById(id) : null;
+      el = SPECIAL_ID_MAP[playerPos] ? document.getElementById(SPECIAL_ID_MAP[playerPos]!) : null;
     } else {
       el = board.querySelector(`[data-cell="${playerPos}"]`);
     }
 
-    if (!el) { setStyle({ display: 'none' }); return; }
+    const prev = prevPos.current;
+    prevPos.current = playerPos;
+
+    if (!el) { setStyle({ display: 'none' }); lastXY.current = null; return; }
 
     // Prefer scroll-independent offsetLeft/offsetTop when the cell is inside board.
     // Fall back to getBoundingClientRect for off-board special cells.
@@ -284,18 +293,67 @@ function PlayerToken({ boardRef, containerRef }: { boardRef: React.RefObject<HTM
       x = (r.left - boardRect.left - bL) + r.width  / 2 - 11;
       y = (r.top  - boardRect.top  - bT) + r.height / 2 - 11;
     }
+
+    cancelAnimationFrame(animRef.current);
+
+    // Bitten? (previous cell was a snake head whose tail is the new position.)
+    const route = (prev != null && (snakes as Record<string, unknown>)[String(prev)] === playerPos)
+      ? routes?.[String(prev)]
+      : undefined;
+    const node = tokenRef.current;
+
+    if (route && route.length > 1 && node && lastXY.current) {
+      // Slither the token down the snake's body: current centre → route → tail.
+      const pts = [
+        { x: lastXY.current.x + 11, y: lastXY.current.y + 11 },
+        ...route,
+        { x: x + 11, y: y + 11 },
+      ];
+      const cum = [0];
+      for (let i = 1; i < pts.length; i++) {
+        cum.push(cum[i - 1]! + Math.hypot(pts[i]!.x - pts[i - 1]!.x, pts[i]!.y - pts[i - 1]!.y));
+      }
+      const total = cum[cum.length - 1] || 1;
+      const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
+      const dur = 1400, t0 = performance.now();
+
+      node.style.transition = 'none';
+      setStyle(s => ({ ...s, display: 'block' }));
+      lastXY.current = { x, y };
+
+      const frame = (now: number) => {
+        const t = Math.min(1, (now - t0) / dur);
+        const d = ease(t) * total;
+        let i = 1;
+        while (i < cum.length - 1 && cum[i]! < d) i++;
+        const a = pts[i - 1]!, b = pts[i]!;
+        const segLen = (cum[i]! - cum[i - 1]!) || 1;
+        const f = Math.max(0, Math.min(1, (d - cum[i - 1]!) / segLen));
+        node.style.left = `${a.x + (b.x - a.x) * f - 11}px`;
+        node.style.top  = `${a.y + (b.y - a.y) * f - 11}px`;
+        if (t < 1) {
+          animRef.current = requestAnimationFrame(frame);
+        } else {
+          node.style.transition = '';
+          setStyle({ display: 'block', left: x, top: y });
+        }
+      };
+      animRef.current = requestAnimationFrame(frame);
+      return;
+    }
+
+    lastXY.current = { x, y };
     setStyle({ display: 'block', left: x, top: y });
-  }, [playerPos, boardRef, containerRef]);
+  }, [playerPos, routes, boardRef, containerRef]);
 
   if (style.display === 'none') return null;
   return (
     <div
+      ref={tokenRef}
       className="player-token"
       style={style}
       aria-label="Player position"
-    >
-      ♟
-    </div>
+    />
   );
 }
 
@@ -327,6 +385,10 @@ function FloatingDicePanel({
   const [panelStyle, setPanelStyle] = useState<CSSProperties>({
     position: 'absolute', top: 20, left: 20,
   });
+  // When on, scroll to keep the player cell in view as it moves.
+  const [follow, setFollow] = useState(false);
+  // Pause autoplay while the cursor is over the controls.
+  const [hovered, setHovered] = useState(false);
 
   // Position the panel near (but not on top of) the player cell.
   // Uses offsetLeft/offsetTop to avoid getBoundingClientRect mid-scroll races.
@@ -367,7 +429,7 @@ function FloatingDicePanel({
       cellH  = r.height;
     }
 
-    const PANEL_W = 148, PANEL_H = 190, MARGIN = 10;
+    const PANEL_W = 150, PANEL_H = 200, MARGIN = 10;
     let px = cellCX - PANEL_W / 2;
     let py = cellCY + cellH / 2 + MARGIN;
     if (py + PANEL_H > boardH - 30) py = cellCY - cellH / 2 - PANEL_H - MARGIN;
@@ -375,14 +437,17 @@ function FloatingDicePanel({
     px = Math.max(MARGIN, Math.min(boardW - PANEL_W - MARGIN, px));
 
     setPanelStyle({ position: 'absolute', left: px, top: py });
-  }, [playerPos, boardRef, containerRef]);
 
-  // Autoplay timer: fires 3 s after each move completes
+    // Keep the player in view while Follow is on.
+    if (follow) el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+  }, [playerPos, follow, boardRef, containerRef]);
+
+  // Autoplay timer: fires after each move completes — paused while hovered.
   useEffect(() => {
-    if (!autoPlay || isAnimating || gameOver) return;
+    if (!autoPlay || isAnimating || gameOver || hovered) return;
     const id = setTimeout(() => void rollDice(), 1000);
     return () => clearTimeout(id);
-  }, [autoPlay, isAnimating, gameOver, playerPos, rollDice]);
+  }, [autoPlay, isAnimating, gameOver, hovered, playerPos, rollDice]);
 
   const label = getCellLabel(playerPos, language);
   const lastLog = moveLog[0] ?? t(language, 'rollToBegin');
@@ -391,8 +456,14 @@ function FloatingDicePanel({
     <div
       id="floating-dice-panel"
       style={panelStyle}
-      className={autoPlay ? 'autoplay-active' : ''}
+      className={autoPlay && !hovered ? 'autoplay-active' : ''}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
+      {autoPlay && hovered && (
+        <div className="text-[10px] font-bold text-saddle text-center w-full">⏸ Paused</div>
+      )}
+
       {/* Roll button */}
       <button
         onClick={() => void rollDice()}
@@ -425,10 +496,29 @@ function FloatingDicePanel({
         {autoPlay ? t(language, 'autoOn') : t(language, 'autoOff')}
       </button>
 
+      {/* Follow toggle — scroll to keep the player in view */}
+      <button
+        onClick={() => setFollow(f => !f)}
+        className={[
+          'w-full py-1 px-3 text-[11px] font-bold rounded-lg',
+          'border-2 transition-all duration-200',
+          follow
+            ? 'bg-parchment-300 border-brown-600 text-brown-800'
+            : 'bg-brown-500/15 border-brown-500 text-brown-700',
+          'hover:enabled:opacity-80',
+        ].join(' ')}
+      >
+        {follow ? '🎯 Following' : '🎯 Follow'}
+      </button>
+
       {/* Countdown bar (only when autoplay is on and waiting) */}
       {autoPlay && !isAnimating && !gameOver && (
         <div className="countdown-track w-full">
-          <div key={`${String(playerPos)}-${lastDiceValue}`} className="countdown-fill" />
+          <div
+            key={`${String(playerPos)}-${lastDiceValue}`}
+            className="countdown-fill"
+            style={{ animationPlayState: hovered ? 'paused' : 'running' }}
+          />
         </div>
       )}
 
@@ -699,19 +789,19 @@ export function Board() {
             }}
           >
             <div style={{
-              background: 'linear-gradient(145deg, rgba(224,242,254,0.92), rgba(186,230,251,0.92))',
-              border: '2px double #1565c0',
+              background: 'linear-gradient(145deg, rgba(48,26,66,0.92), rgba(58,30,20,0.92))',
+              border: '2px double #c9a14a',
               borderRadius: 8,
               padding: '10px 16px',
-              boxShadow: '0 2px 12px rgba(21,101,192,0.3)',
+              boxShadow: '0 2px 18px rgba(201,161,74,0.45), inset 0 0 14px rgba(0,0,0,0.4)',
             }}>
-              <div style={{ fontSize: 15, fontWeight: 'bold', color: '#082560', lineHeight: 1.3 }}>
+              <div style={{ fontSize: 15, fontWeight: 'bold', color: '#f0d488', lineHeight: 1.3 }}>
                 हरिहर क्षेत्र
               </div>
-              <div style={{ fontSize: 11, color: '#1565c0', marginTop: 2, letterSpacing: '0.04em' }}>
+              <div style={{ fontSize: 11, color: '#d8b878', marginTop: 2, letterSpacing: '0.04em' }}>
                 Harihar Kshetra
               </div>
-              <div style={{ fontSize: 9, color: '#0369a1', marginTop: 3, lineHeight: 1.4 }}>
+              <div style={{ fontSize: 9, color: '#c9a14a', marginTop: 3, lineHeight: 1.4 }}>
                 ॐ नमः शिवाय · ॐ नमो विष्णवे
               </div>
             </div>
@@ -722,7 +812,7 @@ export function Board() {
             <span className="cell-name font-bold text-[11px] text-[#01579b]">जन्मस्थान</span>
           </div>
           <div id="cell-maran" className="cell cell-special-maran" style={{ gridRow: 34, gridColumn: 7 }}>
-            <span className="cell-name font-bold text-[12px] text-[#880e4f]">मरण</span>
+            <span className="cell-name font-bold text-[12px] text-[#ffd6e0]">मरण</span>
           </div>
 
           {/* Bottom hell row (row 35) */}
@@ -736,7 +826,7 @@ export function Board() {
           {svgData && <SnakeLadderSvg data={svgData} visible={slVisible} />}
 
           {/* Player token */}
-          <PlayerToken boardRef={boardRef} containerRef={containerRef} />
+          <PlayerToken boardRef={boardRef} containerRef={containerRef} routes={svgData?.snakeRoutes} />
 
           {/* Floating dice panel — lives inside #board so it scrolls with it */}
           <FloatingDicePanel boardRef={boardRef} containerRef={containerRef} />

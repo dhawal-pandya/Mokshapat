@@ -7,6 +7,7 @@ import { Legend }         from './components/organisms/Legend';
 import { InfoPanels }     from './components/organisms/InfoPanels';
 import { MoveLogDrawer }  from './components/molecules/MoveLogDrawer';
 import { PrintModal }     from './components/organisms/PrintModal';
+import { Confetti }       from './components/organisms/Confetti';
 import { t }              from './utils/langUtils';
 
 function MobileControlsBar() {
@@ -108,13 +109,13 @@ function LifeCounter() {
 
 function Footer() {
   return (
-    <p className="text-center text-brown-500 text-[12px] mt-6 mb-2">
+    <p className="text-center text-parchment-300 text-[12px] mt-6 mb-2">
       rebuilt with ❤️ by{' '}
       <a
         href="https://dhawal-pandya.github.io"
         target="_blank"
         rel="noopener noreferrer"
-        className="underline hover:text-saddle transition-colors"
+        className="underline text-[#e0b85a] hover:text-[#f4d488] transition-colors"
       >
         Dhawal Pandya
       </a>
@@ -130,15 +131,19 @@ export function App() {
     <div className="parchment-bg parchment-frame min-h-screen text-brown-800 font-sans">
       {showIntro && <IntroScreen />}
       <MobileControlsBar />
+      <Confetti />
       {showPrint && <PrintModal onClose={() => setShowPrint(false)} />}
 
       <div className="px-[15px] pt-[15px]">
         {/* Page title */}
         <h1
-          className="text-center text-[24px] font-bold text-saddle mb-3"
-          style={{ textShadow: '1px 1px 2px rgba(139,69,19,0.3)' }}
+          className="font-display text-center text-[30px] font-bold mb-3 tracking-[0.18em]"
+          style={{
+            color: '#e7c168',
+            textShadow: '0 1px 0 #5a3e12, 0 0 18px rgba(201,161,74,0.45), 0 2px 6px rgba(0,0,0,0.6)',
+          }}
         >
-          Mokshapat
+          ॐ MOKSHAPAT ॐ
         </h1>
 
         {/* Single nav bar: search left · controls right */}
@@ -157,7 +162,7 @@ export function App() {
           {/* Move history — collapsible drawer */}
           <MoveLogDrawer />
 
-          <p className="text-center text-brown-600 text-[11px] mt-1">
+          <p className="text-center text-parchment-200 text-[11px] mt-1">
             ⬇ Bottom row: महानरक (Great Hell) · क्षुद्रनरक (Minor Hell) · मृत्यू उर्फ कबर (Death)
           </p>
         </div>

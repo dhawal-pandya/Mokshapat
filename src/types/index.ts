@@ -64,18 +64,39 @@ export interface LadderPathData {
   key: string;
 }
 
-export interface SnakePathData {
-  d: string;
-  color: string;
-  headMarkerId: string;
-  tailMarkerId: string;
+// A naturalistic snake skin: edge/base/belly shades for the body gradient.
+export interface SnakeSkin {
+  id: string;
+  dark: string;   // spine / shaded edge
+  base: string;   // mid body
+  light: string;  // sunlit top
+  belly: string;  // ventral sheen line
+}
+
+export interface SnakeHeadGlyph {
+  outlineD: string;                                  // almond snout (filled with body)
+  eyes: Array<{ cx: number; cy: number; r: number }>;
+  glints: Array<{ cx: number; cy: number; r: number }>;
+  tongueD: string;                                   // forked flicking tongue
+}
+
+// One whole creature: a single snake or a many-headed snake (shared trunk +
+// branches). All limbs share one fill so overlaps merge; one drop-shadow on
+// the group unifies the silhouette.
+export interface SnakeBody {
   key: string;
+  skinId: string;
+  bodyD: string;     // filled tapered outline (trunk + branches + head snouts)
+  bellyD: string;    // belly sheen, stroked light over the fill
+  heads: SnakeHeadGlyph[];
 }
 
 export interface SvgData {
   ladders: LadderPathData[];
-  snakes: SnakePathData[];
-  markerDefs: Array<{ id: string; type: 'head' | 'tail'; color: string }>;
+  snakeBodies: SnakeBody[];
+  snakeSkins: SnakeSkin[];
+  // Head cell (stringified) → centreline points head→tail, for the bite ride.
+  snakeRoutes: Record<string, SvgPoint[]>;
   width: number;
   height: number;
 }

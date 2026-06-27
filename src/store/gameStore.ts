@@ -72,57 +72,64 @@ export const useGameStore = create<GameStore>()((set, get) => ({
     }
     const roll = Math.floor(Math.random() * 6) + 1;
     set({ lastDiceValue: roll });
-    addLog(get, set, `🎲 ${roll}`);
+    const names = getCellNames(get().language);
+    const cellTag = (n: number) => `${n} ${names[n] ?? ''}`.trim();
 
     let { playerPos } = get();
 
     // ---- Special-position rules ----
     if (MAHANARAK_POS.includes(playerPos)) {
       set({ playerPos: 'क्षुद्रनरक' });
-      addLog(get, set, '→ क्षुद्रनरक');
+      addLog(get, set, `🎲 ${roll} → क्षुद्रनरक`);
       set({ isAnimating: false }); return;
     }
     if (playerPos === 'क्षुद्रनरक') {
       set({ playerPos: 0 });
-      addLog(get, set, '→ जन्मस्थान');
+      addLog(get, set, `🎲 ${roll} → जन्मस्थान`);
       set({ isAnimating: false }); return;
     }
     if (playerPos === 'मरण') {
       set({ playerPos: 0 });
-      addLog(get, set, '→ Escaped to start');
+      addLog(get, set, `🎲 ${roll} → जन्मस्थान (escaped)`);
       set({ isAnimating: false }); return;
     }
     if (playerPos === 'मृत्यू उर्फ कबर') {
       const count = get().mrutyuRollCount + 1;
       if (count < 4) {
+        addLog(get, set, `🎲 ${roll} → मृत्यू (${count}/3)`);
         set({ mrutyuRollCount: count, isAnimating: false });
       } else {
         set({ mrutyuRollCount: 0, playerPos: 'महानरक-राइट', narakCount: get().narakCount + 1 });
-        addLog(get, set, '→ महानरक');
+        addLog(get, set, `🎲 ${roll} → महानरक`);
         set({ isAnimating: false });
       }
       return;
     }
     if (typeof playerPos === 'string') {
+      addLog(get, set, `🎲 ${roll} → जन्मस्थान`);
       set({ playerPos: 0, isAnimating: false }); return;
     }
 
     // ---- Enter board from janmasthan ----
     if (playerPos === 0) {
       set({ playerPos: 1, lifeCount: get().lifeCount + 1 });
-      addLog(get, set, '→ Entered at 1');
+      addLog(get, set, `🎲 ${roll} → ${cellTag(1)}`);
       await checkLanding(get, set);
       set({ isAnimating: false }); return;
     }
 
     // ---- Normal move ----
     const newPos = playerPos + roll;
-    if (newPos > 285) { set({ isAnimating: false }); return; }
+    if (newPos > 285) {
+      addLog(get, set, `🎲 ${roll} → too high, stay at ${cellTag(playerPos)}`);
+      set({ isAnimating: false }); return;
+    }
 
     for (let step = playerPos + 1; step <= newPos; step++) {
       await delay(350);
       set({ playerPos: step });
     }
+    addLog(get, set, `🎲 ${roll} → ${cellTag(newPos)}`);
 
     const landed = get().playerPos as number;
 

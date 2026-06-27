@@ -5,25 +5,28 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Aged-parchment / sand — light panel & button backgrounds.
         parchment: {
-          50:  '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fb',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
+          50:  '#fbf4e6',
+          100: '#f4e7cc',
+          200: '#e9d2a4',
+          300: '#d9b878',
+          400: '#c69a4c',
+          500: '#a97c2c',
         },
+        // Bronze → espresso — borders and dark text.
         brown: {
-          100: '#dbeafe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#1565c0',
-          600: '#0d47a1',
-          700: '#0c3880',
-          800: '#082560',
-          900: '#051040',
+          100: '#ecdcc0',
+          300: '#c8a673',
+          400: '#a07a40',
+          500: '#6f4a1f',
+          600: '#583a17',
+          700: '#412a10',
+          800: '#2e1c0a',
+          900: '#1d1206',
         },
-        saddle: '#059669',
+        // Antique gold — titles & important highlights.
+        saddle: '#9a6410',
       },
       fontFamily: {
         sans: ['Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif'],
